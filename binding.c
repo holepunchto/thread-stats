@@ -51,10 +51,14 @@ thread_stats (js_env_t *env, js_callback_info_t *info) {
     V("cpuUsage", cpu_usage, double)
 #undef V
 
-    if (stats[i].self) {
-      err = js_set_named_property(env, result, "self", thread);
-      assert(err == 0);
-    }
+    bool self = stats[i].self;
+
+    js_value_t *value;
+    err = js_get_boolean(env, self, &value);
+    assert(err == 0);
+
+    err = js_set_named_property(env, thread, "self", value);
+    assert(err == 0);
   }
 
   return result;

@@ -13,8 +13,7 @@ const threadStats = require('thread-stats')
 
 const threads = threadStats()
 
-console.log(threads) // All thread stats
-console.log(threads.self) // Current thread stats
+console.log(threads) // Prints stats for each thread
 ```
 
 ## License
