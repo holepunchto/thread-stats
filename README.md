@@ -11,7 +11,10 @@ npm i thread-stats
 ```js
 const threadStats = require('thread-stats')
 
-console.log(threadStats())
+const threads = threadStats()
+
+console.log(threads) // All thread stats
+console.log(threads.self) // Current thread stats
 ```
 
 ## License
