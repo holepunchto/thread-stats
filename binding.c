@@ -38,17 +38,23 @@ thread_stats (js_env_t *env, js_callback_info_t *info) {
     err = js_set_element(env, result, i, thread);
     assert(err == 0);
 
-#define V(name, property) \
+#define V(name, property, type) \
   { \
     js_value_t *value; \
-    err = js_create_double(env, stats[i].property, &value); \
+    err = js_create_##type(env, stats[i].property, &value); \
     assert(err == 0); \
     err = js_set_named_property(env, thread, name, value); \
     assert(err == 0); \
   }
 
-    V("cpuUsage", cpu_usage)
+    V("id", id, int64)
+    V("cpuUsage", cpu_usage, double)
 #undef V
+
+    if (stats[i].self) {
+      err = js_set_named_property(env, result, "self", thread);
+      assert(err == 0);
+    }
   }
 
   return result;
