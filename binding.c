@@ -6,17 +6,21 @@
 
 #if THREAD_STATS_APPLE
 #include "apple.h"
+#elif THREAD_STATS_LINUX
+#include "linux.c"
 #endif
 
 static js_value_t *
 thread_stats (js_env_t *env, js_callback_info_t *info) {
   int err;
 
-  size_t len = 1024;
+  size_t len = 0;
   thread_stats_t stats[1024];
 
 #if THREAD_STATS_APPLE
   err = thread_stats__apple(stats, &len);
+#elif THREAD_STATS_LINUX
+  err = thread_stats__linux(stats, &len);
 #else
   err = -1;
 #endif
