@@ -1,3 +1,4 @@
+#include <string.h>
 #include <unistd.h>
 
 #include "types.h"
@@ -6,6 +7,8 @@ static inline int
 thread_stats__linux (thread_stats_t *stats, size_t *len) {
   int self = getpid();
   clock_t clock_ticks = sysconf(_SC_CLK_TCK);
+
+  *len = 0;
 
   float uptime;
 

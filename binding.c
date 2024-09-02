@@ -14,7 +14,7 @@ static js_value_t *
 thread_stats (js_env_t *env, js_callback_info_t *info) {
   int err;
 
-  size_t len = 0;
+  size_t len = 1024;
   thread_stats_t stats[1024];
 
 #if THREAD_STATS_APPLE

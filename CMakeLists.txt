@@ -51,4 +51,10 @@ if(target MATCHES "darwin|ios")
     PRIVATE
       THREAD_STATS_APPLE=1
   )
+elseif(target MATCHES "linux|android")
+  target_compile_definitions(
+    ${thread_stats_node}
+    PRIVATE
+      THREAD_STATS_LINUX=1
+  )
 endif()
