@@ -5,10 +5,10 @@
 
 static inline int
 thread_stats__linux (thread_stats_t *stats, size_t *len) {
+  int err;
+
   int self = getpid();
   clock_t clock_ticks = sysconf(_SC_CLK_TCK);
-
-  *len = 0;
 
   float uptime;
 
@@ -28,6 +28,12 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
     return -1;
   }
 
+  err = close(uptime_fd);
+
+  if (err == -1) {
+    return -1;
+  }
+
   sscanf(uptime_buf, "%f", &uptime);
 
   DIR *self_task_dir;
@@ -43,7 +49,9 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
     return -1;
   }
 
-  while (self_task_dir_entry = readdir(self_task_dir)) {
+  int threads_len = 0;
+
+  while (threads_len < *len && (self_task_dir_entry = readdir(self_task_dir))) {
     // skip "." and ".." folders
     if (strstr(self_task_dir_entry->d_name, ".")) {
       continue;
@@ -52,10 +60,9 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
     int pid = atoi(self_task_dir_entry->d_name);
 
     char stat_path[30];
-    int stat_fd;
-
     sprintf(stat_path, "/proc/%d/task/%d/stat", self, pid);
 
+    int stat_fd;
     stat_fd = open(stat_path, O_RDONLY);
 
     if (stat_fd == -1) {
@@ -71,20 +78,34 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
       continue;
     }
 
+    err = close(stat_fd);
+
+    if (err == -1) {
+      break;
+    }
+
     unsigned long utime, stime;
     unsigned long long starttime;
 
     // https://www.man7.org/linux/man-pages//man5/proc_pid_stat.5.html
-    sscanf(stat_buf, "%*d %*s %*c %*d %*d %*d %*d %*d %*u %*u %*u %*u %*u %lu %lu %*d %*d %*d %*d %*d %llu", &utime, &stime, &starttime);
+    sscanf(stat_buf, "%*d %*s %*c %*d %*d %*d %*d %*d %*u %*u %*u %*u %*u %lu %lu %*d %*d %*d  %*d %*d %llu", &utime, &stime, &starttime);
 
-    thread_stats_t *stat = &stats[*len];
+    thread_stats_t *stat = &stats[threads_len];
 
     stat->id = pid;
     stat->self = self == pid;
     stat->cpu_usage = (utime + stime) / (uptime - (starttime / clock_ticks));
 
-    ++*len;
+    ++threads_len;
   }
+
+  err = closedir(self_task_dir);
+
+  if (err == -1) {
+    return -1;
+  }
+
+  *len = threads_len;
 
   return 0;
 }

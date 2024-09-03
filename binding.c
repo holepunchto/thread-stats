@@ -7,7 +7,7 @@
 #if THREAD_STATS_APPLE
 #include "apple.h"
 #elif THREAD_STATS_LINUX
-#include "linux.c"
+#include "linux.h"
 #endif
 
 static js_value_t *
