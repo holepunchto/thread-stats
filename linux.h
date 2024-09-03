@@ -13,16 +13,16 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
   float uptime;
 
   int uptime_fd;
-  char uptime_buf[100];
-  int uptime_buf_read;
-
   uptime_fd = open("/proc/uptime", O_RDONLY);
 
   if (uptime_fd == -1) {
     return -1;
   }
 
-  uptime_buf_read = read(uptime_fd, uptime_buf, 100);
+  char uptime_buf[4096 + 1];
+  int uptime_buf_read;
+
+  uptime_buf_read = read(uptime_fd, uptime_buf, 4096);
 
   if (uptime_buf_read == -1) {
     return -1;
@@ -38,7 +38,7 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
   DIR *self_task_dir;
 
-  char self_task_dir_path[35];
+  char self_task_dir_path[4096 + 1];
   struct dirent *self_task_dir_entry;
 
   sprintf(self_task_dir_path, "/proc/%d/task", self);
@@ -59,7 +59,7 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
     int pid = atoi(self_task_dir_entry->d_name);
 
-    char stat_path[30];
+    char stat_path[4096 + 1];
     sprintf(stat_path, "/proc/%d/task/%d/stat", self, pid);
 
     int stat_fd;
@@ -69,10 +69,10 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
       continue;
     }
 
-    char stat_buf[500];
+    char stat_buf[4096 + 1];
     int stat_buf_read;
 
-    stat_buf_read = read(stat_fd, stat_buf, 500);
+    stat_buf_read = read(stat_fd, stat_buf, 4096);
 
     if (stat_buf_read == -1) {
       continue;
