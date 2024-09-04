@@ -18,7 +18,7 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
   }
 
   char buf[4096 + 1 /* NULL */];
-  size_t buf_len;
+  ssize_t buf_len;
 
   buf_len = read(fd, buf, 4096);
 
