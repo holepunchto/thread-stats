@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -32,7 +33,7 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
   sscanf(buf, "%f", &uptime);
 
-  sprintf(buf, "/proc/%d/task", self);
+  snprintf(buf, 4096, "/proc/%d/task", self);
 
   DIR *dir = opendir(buf);
 
@@ -52,7 +53,7 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
     int pid = atoi(entry->d_name);
 
-    sprintf(buf, "/proc/%d/task/%d/stat", self, pid);
+    snprintf(buf, 4096, "/proc/%d/task/%d/stat", self, pid);
 
     int stat_fd = open(buf, O_RDONLY);
 
