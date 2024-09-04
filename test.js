@@ -1,7 +1,7 @@
 const test = require('brittle')
-const { isMac } = require('which-runtime')
+const { isWindows } = require('which-runtime')
 const threadStats = require('.')
 
-test('basic', { skip: !isMac }, (t) => {
+test('basic', { skip: isWindows }, (t) => {
   t.comment(threadStats())
 })
