@@ -24,13 +24,10 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
   uptime_buf_read = read(uptime_fd, uptime_buf, 4096);
 
-  if (uptime_buf_read == -1) {
-    return -1;
-  }
-
   err = close(uptime_fd);
+  assert(err == 0);
 
-  if (err == -1) {
+  if (uptime_buf_read == -1) {
     return -1;
   }
 
@@ -74,14 +71,11 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
     stat_buf_read = read(stat_fd, stat_buf, 4096);
 
+    err = close(stat_fd);
+    assert(err == 0);
+
     if (stat_buf_read == -1) {
       continue;
-    }
-
-    err = close(stat_fd);
-
-    if (err == -1) {
-      break;
     }
 
     unsigned long utime, stime;
@@ -100,10 +94,7 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
   }
 
   err = closedir(self_task_dir);
-
-  if (err == -1) {
-    return -1;
-  }
+  assert(err == 0);
 
   *len = threads_len;
 
