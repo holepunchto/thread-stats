@@ -10,6 +10,7 @@
     "index.js",
     "types.h",
     "apple.h",
+    "linux.h",
     "binding.c",
     "binding.js",
     "CMakeLists.txt",
