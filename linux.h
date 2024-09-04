@@ -55,15 +55,15 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
     snprintf(buf, 4096, "/proc/%d/task/%d/stat", self, pid);
 
-    int stat_fd = open(buf, O_RDONLY);
+    int fd = open(buf, O_RDONLY);
 
-    if (stat_fd == -1) {
+    if (fd == -1) {
       continue;
     }
 
-    buf_len = read(stat_fd, buf, 4096);
+    buf_len = read(fd, buf, 4096);
 
-    err = close(stat_fd);
+    err = close(fd);
     assert(err == 0);
 
     if (buf_len == -1) {
