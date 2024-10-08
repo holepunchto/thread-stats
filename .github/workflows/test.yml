@@ -49,9 +49,8 @@ jobs:
     - run: npm install
     - run: bare-dev install --bare --node --platform ${{ matrix.platform }} --arch ${{ matrix.arch }} --debug
       if: ${{ matrix.platform != 'android' }}
-    - run: npm test
-      if: ${{ matrix.platform != 'android' }}
     - run: bare-dev configure --debug --platform ${{ matrix.platform }} --arch ${{ matrix.arch }} ${{ matrix.flags }}
       if: ${{ matrix.platform == 'android' }}
     - run: bare-dev build --debug
       if: ${{ matrix.platform == 'android' }}
+    - run: npm test
