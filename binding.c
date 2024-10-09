@@ -21,6 +21,8 @@ thread_stats (js_env_t *env, js_callback_info_t *info) {
   err = thread_stats__apple(stats, &len);
 #elif THREAD_STATS_LINUX
   err = thread_stats__linux(stats, &len);
+#elif THREAD_STATS_ANDROID
+  len = err = 0;
 #else
   err = -1;
 #endif

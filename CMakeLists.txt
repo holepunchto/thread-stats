@@ -21,11 +21,17 @@ if(target MATCHES "darwin|ios")
     PRIVATE
       THREAD_STATS_APPLE=1
   )
-elseif(target MATCHES "linux|android")
+elseif(target MATCHES "linux")
   target_compile_definitions(
     ${thread_stats_bare}
     PRIVATE
       THREAD_STATS_LINUX=1
+  )
+elseif(target MATCHES "android")
+  target_compile_definitions(
+    ${thread_stats_bare}
+    PRIVATE
+      THREAD_STATS_ANDROID=1
   )
 endif()
 
@@ -51,10 +57,16 @@ if(target MATCHES "darwin|ios")
     PRIVATE
       THREAD_STATS_APPLE=1
   )
-elseif(target MATCHES "linux|android")
+elseif(target MATCHES "linux")
   target_compile_definitions(
     ${thread_stats_node}
     PRIVATE
       THREAD_STATS_LINUX=1
+  )
+elseif(target MATCHES "android")
+  target_compile_definitions(
+    ${thread_stats_node}
+    PRIVATE
+      THREAD_STATS_ANDROID=1
   )
 endif()
