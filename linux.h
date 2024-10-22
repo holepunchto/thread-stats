@@ -1,5 +1,8 @@
+#include <assert.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -83,7 +86,7 @@ thread_stats__linux (thread_stats_t *stats, size_t *len) {
 
     stat->id = pid;
     stat->self = self == pid;
-    stat->cpu_usage = (utime + stime) / (uptime - (starttime / clock_ticks));
+    stat->cpu_usage = (utime + stime) / (uptime - ((float) starttime / (float) clock_ticks));
 
     ++threads_len;
   }
