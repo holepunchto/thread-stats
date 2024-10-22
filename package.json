@@ -1,6 +1,6 @@
 {
   "name": "thread-stats",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Get resource usage for individual threads in the current process",
   "exports": {
     ".": "./index.js",
