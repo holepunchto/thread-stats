@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(thread_stats C)
+find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
+find_package(cmake-napi REQUIRED PATHS node_modules/cmake-napi)
 
-include(bare)
-include(napi)
+project(thread_stats C)
 
 bare_target(target)
 
@@ -30,14 +30,6 @@ elseif(target MATCHES "linux|android")
 endif()
 
 add_napi_module(thread_stats_node)
-
-bare_include_directories(compat NAPI)
-
-target_include_directories(
-  ${thread_stats_node}
-  PRIVATE
-    ${compat}
-)
 
 target_sources(
   ${thread_stats_node}

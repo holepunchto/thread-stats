@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "brittle": "^3.1.0",
+    "cmake-bare": "^1.1.10",
+    "cmake-napi": "^1.0.4",
     "standard": "^17.0.0",
     "which-runtime": "^1.2.0"
   }

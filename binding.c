@@ -1,6 +1,5 @@
 #include <assert.h>
-#include <bare.h>
-#include <js.h>
+#include <node_api.h>
 
 #include "types.h"
 
@@ -10,8 +9,8 @@
 #include "linux.h"
 #endif
 
-static js_value_t *
-thread_stats (js_env_t *env, js_callback_info_t *info) {
+static napi_value
+thread_stats (napi_env env, napi_callback_info info) {
   int err;
 
   size_t len = 1024;
@@ -26,28 +25,28 @@ thread_stats (js_env_t *env, js_callback_info_t *info) {
 #endif
 
   if (err < 0) {
-    js_throw_error(env, NULL, "Could not get thread stats");
+    napi_throw_error(env, NULL, "Could not get thread stats");
     return NULL;
   }
 
-  js_value_t *result;
-  err = js_create_array_with_length(env, len, &result);
+  napi_value result;
+  err = napi_create_array_with_length(env, len, &result);
   assert(err == 0);
 
   for (size_t i = 0; i < len; i++) {
-    js_value_t *thread;
-    err = js_create_object(env, &thread);
+    napi_value thread;
+    err = napi_create_object(env, &thread);
     assert(err == 0);
 
-    err = js_set_element(env, result, i, thread);
+    err = napi_set_element(env, result, i, thread);
     assert(err == 0);
 
 #define V(name, property, type) \
   { \
-    js_value_t *value; \
-    err = js_create_##type(env, stats[i].property, &value); \
+    napi_value value; \
+    err = napi_create_##type(env, stats[i].property, &value); \
     assert(err == 0); \
-    err = js_set_named_property(env, thread, name, value); \
+    err = napi_set_named_property(env, thread, name, value); \
     assert(err == 0); \
   }
 
@@ -57,27 +56,27 @@ thread_stats (js_env_t *env, js_callback_info_t *info) {
 
     bool self = stats[i].self;
 
-    js_value_t *value;
-    err = js_get_boolean(env, self, &value);
+    napi_value value;
+    err = napi_get_boolean(env, self, &value);
     assert(err == 0);
 
-    err = js_set_named_property(env, thread, "self", value);
+    err = napi_set_named_property(env, thread, "self", value);
     assert(err == 0);
   }
 
   return result;
 }
 
-static js_value_t *
-thread_stats_exports (js_env_t *env, js_value_t *exports) {
+static napi_value
+thread_stats_exports (napi_env env, napi_value exports) {
   int err;
 
 #define V(name, fn) \
   { \
-    js_value_t *val; \
-    err = js_create_function(env, name, -1, fn, NULL, &val); \
+    napi_value val; \
+    err = napi_create_function(env, name, -1, fn, NULL, &val); \
     assert(err == 0); \
-    err = js_set_named_property(env, exports, name, val); \
+    err = napi_set_named_property(env, exports, name, val); \
     assert(err == 0); \
   }
 
@@ -87,4 +86,4 @@ thread_stats_exports (js_env_t *env, js_value_t *exports) {
   return exports;
 }
 
-BARE_MODULE(thread_stats, thread_stats_exports)
+NAPI_MODULE(thread_stats, thread_stats_exports)
