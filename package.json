@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/holepunchto/thread-stats#readme",
   "dependencies": {
-    "load-addon": "^1.0.0"
+    "require-addon": "^1.0.2"
   },
   "devDependencies": {
     "brittle": "^3.1.0",
