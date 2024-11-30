@@ -6,13 +6,20 @@
     ".": "./index.js",
     "./package": "./package.json"
   },
+  "imports": {
+    "#binding": {
+      "bare": "./binding/bare.js",
+      "node": "./binding/node.js"
+    }
+  },
   "files": [
     "index.js",
     "types.h",
     "apple.h",
     "linux.h",
     "binding.c",
-    "binding.js",
+    "binding/bare.js",
+    "binding/node.js",
     "CMakeLists.txt",
     "prebuilds"
   ],
