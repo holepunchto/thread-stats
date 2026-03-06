@@ -48,7 +48,7 @@
     "cmake-bare": "^1.1.10",
     "cmake-napi": "^1.0.4",
     "prettier": "^3.4.1",
-    "prettier-config-standard": "^7.0.0",
+    "prettier-config-holepunch": "^2.0.0",
     "which-runtime": "^1.2.0"
   }
 }
