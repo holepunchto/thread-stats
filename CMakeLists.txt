@@ -37,6 +37,20 @@ target_sources(
     binding.c
 )
 
+target_compile_definitions(
+  ${thread_stats_node}
+  PRIVATE
+    NAPI_VERSION=9
+)
+
+resolve_node_module(bare-compat-napi compat)
+
+target_include_directories(
+  ${thread_stats_node}
+  PRIVATE
+    "${compat}/include"
+)
+
 if(target MATCHES "darwin|ios")
   target_compile_definitions(
     ${thread_stats_node}

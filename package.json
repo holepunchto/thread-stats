@@ -6,29 +6,23 @@
     ".": "./index.js",
     "./package": "./package.json"
   },
-  "imports": {
-    "#binding": {
-      "bare": "./binding/bare.js",
-      "node": "./binding/node.js"
-    }
-  },
   "files": [
     "index.js",
     "types.h",
     "apple.h",
     "linux.h",
     "binding.c",
-    "binding/bare.js",
-    "binding/node.js",
+    "binding.js",
     "CMakeLists.txt",
     "prebuilds"
   ],
   "addon": true,
   "scripts": {
-    "test": "npm run lint && npm run test:bare && npm run test:node",
-    "test:bare": "bare test.js",
-    "test:node": "node test.js",
-    "lint": "prettier . --check"
+    "format": "prettier --write . && lunte --fix",
+    "lint": "prettier --check . && lunte",
+    "test": "npm run test:bare && npm run test:node",
+    "test:bare": "brittle-bare --coverage test.js",
+    "test:node": "brittle-node --coverage test.js"
   },
   "repository": {
     "type": "git",
@@ -44,9 +38,11 @@
     "require-addon": "^1.0.2"
   },
   "devDependencies": {
+    "bare-compat-napi": "^1.4.1",
     "brittle": "^3.1.0",
     "cmake-bare": "^1.1.10",
     "cmake-napi": "^1.0.4",
+    "lunte": "^1.8.6",
     "prettier": "^3.4.1",
     "prettier-config-holepunch": "^2.0.0",
     "which-runtime": "^1.2.0"
