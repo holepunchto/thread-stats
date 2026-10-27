@@ -6,20 +6,13 @@
     ".": "./index.js",
     "./package": "./package.json"
   },
-  "imports": {
-    "#binding": {
-      "bare": "./binding/bare.js",
-      "node": "./binding/node.js"
-    }
-  },
   "files": [
     "index.js",
     "types.h",
     "apple.h",
     "linux.h",
     "binding.c",
-    "binding/bare.js",
-    "binding/node.js",
+    "binding.js",
     "CMakeLists.txt",
     "prebuilds"
   ],
@@ -45,6 +38,7 @@
     "require-addon": "^1.0.2"
   },
   "devDependencies": {
+    "bare-compat-napi": "^1.4.1",
     "brittle": "^3.1.0",
     "cmake-bare": "^1.1.10",
     "cmake-napi": "^1.0.4",
